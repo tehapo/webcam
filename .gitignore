@@ -3,3 +3,4 @@
 .settings
 webcam/target
 webcam-demo/target
+webcam-demo/src/main/webapp/VAADIN/widgetsets
