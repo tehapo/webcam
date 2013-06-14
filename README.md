@@ -12,10 +12,10 @@ Official releases of this add-on will later be available at Vaadin Directory. Fo
 
 ## Building and running demo
 
-git clone https://github.com/tehapo/webcam.git
-mvn clean install
-cd demo
-mvn jetty:run
+- git clone https://github.com/tehapo/webcam.git
+- mvn clean install
+- cd demo
+- mvn jetty:run
 
 To see the demo, navigate to http://localhost:8080/
 
