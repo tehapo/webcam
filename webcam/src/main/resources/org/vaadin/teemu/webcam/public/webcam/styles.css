@@ -1,7 +1,29 @@
 div.webcam {
+	background: rgba(0, 0, 0, 0.2);
+	position: relative;
 	cursor: pointer;
 	user-select: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
+}
+div.webcam:after {
+	content: "";
+	pointer-events: none;
+	width: 56px;
+	height: 56px;
+	background: url(webcam-shutter.png) center center no-repeat;
+	background-size: 100%;
+	position: absolute;
+	margin-left: -28px;
+	left: 50%;
+	bottom: 25px;
+	opacity: 0.8;
+	-webkit-transition: opacity 200ms linear, background-size 30ms ease-in-out;
+}
+div.webcam:hover:after {
+	opacity: 1;	
+}
+div.webcam:active:after {
+	background-size: 90%;
 }

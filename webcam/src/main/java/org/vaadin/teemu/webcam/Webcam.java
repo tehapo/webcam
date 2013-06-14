@@ -1,44 +1,98 @@
 package org.vaadin.teemu.webcam;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.bind.DatatypeConverter;
+
 import org.vaadin.teemu.webcam.client.WebcamClientRpc;
 import org.vaadin.teemu.webcam.client.WebcamServerRpc;
-import org.vaadin.teemu.webcam.client.WebcamState;
 
-import com.vaadin.shared.MouseEventDetails;
+import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Upload;
+import com.vaadin.ui.Upload.Receiver;
 
-// This is the server-side UI component that provides public API 
-// for Webcam
-public class Webcam extends com.vaadin.ui.AbstractComponent {
+/**
+ * Displays a live webcam viewfinder and takes a photo when either user clicks
+ * on the viewfinder or the {@link #capture()} method is called.
+ * 
+ * <br />
+ * <br />
+ * To receive the captured image, the {@link Upload.Receiver} interface is used
+ * similarily to the {@link Upload} component of core Vaadin framework.
+ */
+@SuppressWarnings("serial")
+public class Webcam extends AbstractComponent {
 
-	private int clickCount = 0;
+    protected Receiver receiver;
 
-	// To process events from the client, we implement ServerRpc
-	private WebcamServerRpc rpc = new WebcamServerRpc() {
+    public Webcam() {
+        registerRpc(new WebcamServerRpc() {
+            public void captured(String dataUrl) {
+                handleDataUrl(dataUrl);
+            }
+        });
+    }
 
-		// Event received from client - user clicked our widget
-		public void clicked(MouseEventDetails mouseDetails) {
-			
-			// Send nag message every 5:th click with ClientRpc
-			if (++clickCount % 5 == 0) {
-				getRpcProxy(WebcamClientRpc.class)
-						.alert("Ok, that's enough!");
-			}
-			
-			// Update shared state. This state update is automatically 
-			// sent to the client. 
-			getState().text = "You have clicked " + clickCount + " times";
-		}
-	};
+    public void setReceiver(Receiver reciver) {
+        this.receiver = reciver;
+    }
 
-	public Webcam() {
+    public Receiver getReceiver() {
+        return receiver;
+    }
 
-		// To receive events from the client, we register ServerRpc
-		registerRpc(rpc);
-	}
+    public void capture() {
+        getRpcProxy(WebcamClientRpc.class).capture();
+    }
 
-	// We must override getState() to cast the state to WebcamState
-	@Override
-	public WebcamState getState() {
-		return (WebcamState) super.getState();
-	}
+    protected OutputStream getOutputStream(String mimeType) {
+        if (receiver != null) {
+            return receiver.receiveUpload(generateFilename(mimeType), mimeType);
+        }
+        return null;
+    }
+
+    protected String generateFilename(String mimeType) {
+        String randomUUID = UUID.randomUUID().toString();
+        if (mimeType.equals("image/jpeg")) {
+            return randomUUID + ".jpeg";
+        } else if (mimeType.equals("image/png")) {
+            return randomUUID + ".png";
+        }
+        return randomUUID;
+    }
+
+    protected void handleDataUrl(String dataUrl) {
+        Pattern dataUrlPattern = Pattern.compile("data:(.*);base64,(.*)");
+        Matcher matcher = dataUrlPattern.matcher(dataUrl);
+        matcher.matches();
+
+        String mimeType = matcher.group(1);
+        String dataBase64 = matcher.group(2);
+
+        OutputStream out = getOutputStream(mimeType);
+        if (out != null) {
+            try {
+                // Convert the base64 encoded image to bytes.
+                byte[] imageData = DatatypeConverter
+                        .parseBase64Binary(dataBase64);
+                out.write(imageData);
+                out.flush();
+            } catch (IOException e) {
+                // TODO
+                e.printStackTrace();
+            } finally {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }

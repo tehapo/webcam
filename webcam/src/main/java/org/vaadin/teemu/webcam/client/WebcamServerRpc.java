@@ -1,12 +1,12 @@
 package org.vaadin.teemu.webcam.client;
 
-import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.communication.ServerRpc;
 
-// ServerRpc is used to pass events from client to server
 public interface WebcamServerRpc extends ServerRpc {
 
-	// Example API: Widget click is clicked
-	public void clicked(MouseEventDetails mouseDetails);
+    /**
+     * Sends the captured webcam image as a data URL to the server.
+     */
+    public void captured(String imgAsDataUrl);
 
 }
