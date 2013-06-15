@@ -1,5 +1,6 @@
 div.webcam {
 	background: rgba(0, 0, 0, 0.2);
+	line-height: 0 !important;
 	position: relative;
 	cursor: pointer;
 	user-select: none;
