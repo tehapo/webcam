@@ -3,6 +3,7 @@ package org.vaadin.teemu.webcam.demo;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import org.vaadin.teemu.webcam.Webcam;
@@ -38,11 +39,13 @@ public class DemoUI extends UI {
             @Override
             public OutputStream receiveUpload(String filename, String mimeType) {
                 try {
-                    File targetFile = new File("/Users/tehapo/Desktop/test/"
-                            + filename);
+                    File targetFile = File.createTempFile(filename, ".jpeg");
+                    targetFile.deleteOnExit();
                     addImage(targetFile);
                     return new FileOutputStream(targetFile);
                 } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 return null;
