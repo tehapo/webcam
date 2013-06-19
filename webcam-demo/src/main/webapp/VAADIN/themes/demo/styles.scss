@@ -24,13 +24,13 @@ $darkgreen: darken($green, 30%);
 	// the component. To include built-in CSS for your component,
 	// edit client/styles.css under java sources
 	div.webcam {
-		color: $green;
+		/*-color: $green;
 		font-size: 50pt;
 		font-weight: bold;
 		text-shadow: 0px 3px 0px $darkgreen,
              0px 14px 10px rgba(0,0,0,0.15),
              0px 24px 2px rgba(0,0,0,0.1),
              0px 34px 30px rgba(0,0,0,0.1);
-        text-align: center;
+        text-align: center;*/
 	}
 }
