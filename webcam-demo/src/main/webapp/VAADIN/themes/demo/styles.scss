@@ -13,10 +13,24 @@ $darkgreen: darken($green, 30%);
 	// You can style your demo app right here
 	.demoContentLayout {
 		background-color: $gray;
-		background-image: url(images/radial-gradient.png);
-		background-size: 90%;
+		background-image: -webkit-radial-gradient(circle, #006080, #002633);
 		background-position: center center;
 		background-repeat: no-repeat;
+	}
+	
+	.webcam,
+	.gif-image {
+		background: #fff;
+		padding: 7px;
+		box-shadow: 0px 10px 20px -7px #000;
+	}
+	
+	.frames {
+		.v-image {
+			margin: 2px;
+			padding: 2px;
+			background: #fff;
+		}
 	}
 	
 	// You can also customize your component for the demo

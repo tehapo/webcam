@@ -65,6 +65,7 @@ public class DemoUI extends UI {
         webcamAndGif.addComponent(webcam);
         webcamAndGif.addComponent(gifImage = new Image(null, new ThemeResource(
                 "images/sample.gif")));
+        gifImage.addStyleName("gif-image");
         gifImage.setWidth("100%");
 
         // layout.addComponent(upload);
@@ -72,6 +73,7 @@ public class DemoUI extends UI {
         layout.addComponent(framesLayout = new CssLayout());
         layout.setComponentAlignment(webcamAndGif, Alignment.TOP_CENTER);
         layout.setComponentAlignment(framesLayout, Alignment.TOP_CENTER);
+        framesLayout.addStyleName("frames");
         framesLayout.setWidth("864px");
         setContent(layout);
     }
@@ -88,6 +90,7 @@ public class DemoUI extends UI {
                         .toArray(new File[imageFiles.size()]));
                 Image newGif = new Image(null, new FileResource(gifImageFile));
                 newGif.setWidth("100%");
+                newGif.addStyleName("gif-image");
                 webcamAndGif.replaceComponent(gifImage, newGif);
                 gifImage = newGif;
             } catch (IOException e) {
