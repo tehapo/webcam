@@ -17,6 +17,11 @@ $darkgreen: darken($green, 30%);
 		background-image: radial-gradient(circle, #006080, #002633);
 		background-position: center center;
 		background-repeat: no-repeat;
+		min-height: 750px;
+	}
+	
+	.webcam video:focus {
+		outline: none;
 	}
 	
 	.webcam,
