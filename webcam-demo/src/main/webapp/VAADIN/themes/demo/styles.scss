@@ -14,6 +14,7 @@ $darkgreen: darken($green, 30%);
 	.demoContentLayout {
 		background-color: $gray;
 		background-image: -webkit-radial-gradient(circle, #006080, #002633);
+		background-image: radial-gradient(circle, #006080, #002633);
 		background-position: center center;
 		background-repeat: no-repeat;
 	}
