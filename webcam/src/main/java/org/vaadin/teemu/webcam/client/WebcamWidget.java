@@ -29,11 +29,6 @@ public class WebcamWidget extends Widget {
         }
     }
 
-    private void setVideoSrc(String src) {
-        video.setSrc(src);
-        video.play();
-    }
-
     private void webcamAvailable() {
         // Sink the events only after we get the webcam.
         DOM.sinkEvents(video.getElement(), Event.ONCLICK);
@@ -57,10 +52,22 @@ public class WebcamWidget extends Widget {
     // @formatter:off
     private native String requestWebCam() /*-{
         var callbackInstance = this;
-        $wnd.navigator.webkitGetUserMedia({ video: true },
+        $wnd.navigator.getMedia = ($wnd.navigator.getUserMedia || $wnd.navigator.webkitGetUserMedia || $wnd.navigator.mozGetUserMedia || $wnd.navigator.msGetUserMedia);
+        $wnd.navigator.getMedia({ video: true, audio: false },
             function(stream) {
-                var url = $wnd.webkitURL.createObjectURL(stream);
-                callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::setVideoSrc(Ljava/lang/String;)(url);
+                var videoElement = callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::getVideoElement()();
+                if ($wnd.navigator.mozGetUserMedia) {
+                    // Firefox
+                    videoElement.mozSrcObject = stream;
+                } else {
+                    // Other browsers
+                    if ($wnd.URL) {
+                        videoElement.src = $wnd.URL.createObjectURL(stream);
+                    } else if ($wnd.webkitURL) {
+                        videoElement.src = $wnd.webkitURL.createObjectURL(stream);
+                    }
+                }
+                videoElement.play();
                 callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::webcamAvailable()();
             },
             function(error) {
