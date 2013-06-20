@@ -21,7 +21,7 @@ public class WebcamConnector extends AbstractComponentConnector {
     private WebcamServerRpc rpc = RpcProxy.create(WebcamServerRpc.class, this);
 
     public WebcamConnector() {
-        getWidget().addClickListener(new EventListener() {
+        getWidget().setClickListener(new EventListener() {
 
             @Override
             public void onBrowserEvent(Event event) {

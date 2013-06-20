@@ -34,7 +34,12 @@ public class WebcamWidget extends Widget {
         video.play();
     }
 
-    private void webcamNotSupported() {
+    private void webcamAvailable() {
+        // Sink the events only after we get the webcam.
+        DOM.sinkEvents(video.getElement(), Event.ONCLICK);
+    }
+
+    private void webcamNotAvailable() {
         // TODO - better error handling
         Window.alert("Webcam not available.");
     }
@@ -43,9 +48,8 @@ public class WebcamWidget extends Widget {
         return video.getElement();
     }
 
-    public void addClickListener(EventListener listener) {
+    public void setClickListener(EventListener listener) {
         if (video != null) {
-            DOM.sinkEvents(video.getElement(), Event.ONCLICK);
             DOM.setEventListener(video.getElement(), listener);
         }
     }
@@ -57,9 +61,10 @@ public class WebcamWidget extends Widget {
             function(stream) {
                 var url = $wnd.webkitURL.createObjectURL(stream);
                 callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::setVideoSrc(Ljava/lang/String;)(url);
+                callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::webcamAvailable()();
             },
             function(error) {
-                callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::webcamNotSupported()();
+                callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::webcamNotAvailable()();
             }
         );
     }-*/;
