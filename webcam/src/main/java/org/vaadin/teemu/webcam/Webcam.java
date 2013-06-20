@@ -2,6 +2,8 @@ package org.vaadin.teemu.webcam;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,6 +14,7 @@ import org.vaadin.teemu.webcam.client.WebcamClientRpc;
 import org.vaadin.teemu.webcam.client.WebcamServerRpc;
 
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.Upload.Receiver;
 
@@ -27,7 +30,20 @@ import com.vaadin.ui.Upload.Receiver;
 @SuppressWarnings("serial")
 public class Webcam extends AbstractComponent {
 
+    private static final Method CAPTURE_SUCCEEDED_METHOD;
     protected Receiver receiver;
+
+    static {
+        try {
+            CAPTURE_SUCCEEDED_METHOD = CaptureSucceededListener.class
+                    .getDeclaredMethod("captureSucceeded",
+                            new Class[] { CaptureSucceededEvent.class });
+        } catch (final java.lang.NoSuchMethodException e) {
+            // This should never happen
+            throw new java.lang.RuntimeException(
+                    "Internal error finding methods in Webcam");
+        }
+    }
 
     public Webcam() {
         registerRpc(new WebcamServerRpc() {
@@ -45,13 +61,23 @@ public class Webcam extends AbstractComponent {
         return receiver;
     }
 
+    public void addCaptureSucceededListener(CaptureSucceededListener listener) {
+        addListener(CaptureSucceededEvent.class, listener,
+                CAPTURE_SUCCEEDED_METHOD);
+    }
+
+    public void removeCaptureSucceededListener(CaptureSucceededListener listener) {
+        removeListener(CaptureSucceededEvent.class, listener,
+                CAPTURE_SUCCEEDED_METHOD);
+    }
+
     public void capture() {
         getRpcProxy(WebcamClientRpc.class).capture();
     }
 
-    protected OutputStream getOutputStream(String mimeType) {
+    protected OutputStream getOutputStream(String filename, String mimeType) {
         if (receiver != null) {
-            return receiver.receiveUpload(generateFilename(mimeType), mimeType);
+            return receiver.receiveUpload(filename, mimeType);
         }
         return null;
     }
@@ -73,8 +99,9 @@ public class Webcam extends AbstractComponent {
 
         String mimeType = matcher.group(1);
         String dataBase64 = matcher.group(2);
+        String filename = generateFilename(mimeType);
 
-        OutputStream out = getOutputStream(mimeType);
+        OutputStream out = getOutputStream(filename, mimeType);
         if (out != null) {
             try {
                 // Convert the base64 encoded image to bytes.
@@ -82,8 +109,9 @@ public class Webcam extends AbstractComponent {
                         .parseBase64Binary(dataBase64);
                 out.write(imageData);
                 out.flush();
+                fireEvent(new CaptureSucceededEvent(this));
             } catch (IOException e) {
-                // TODO
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             } finally {
                 try {
@@ -95,4 +123,21 @@ public class Webcam extends AbstractComponent {
         }
     }
 
+    public interface CaptureSucceededListener extends Serializable {
+
+        /**
+         * Called when an image was successfully captured from the webcam.
+         * 
+         * @param event
+         */
+        public void captureSucceeded(CaptureSucceededEvent event);
+    }
+
+    public class CaptureSucceededEvent extends Component.Event {
+
+        public CaptureSucceededEvent(Component source) {
+            super(source);
+        }
+
+    }
 }

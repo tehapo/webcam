@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.vaadin.teemu.webcam.Webcam;
+import org.vaadin.teemu.webcam.Webcam.CaptureSucceededEvent;
+import org.vaadin.teemu.webcam.Webcam.CaptureSucceededListener;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -19,8 +21,13 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload;
+import com.vaadin.ui.Upload.Receiver;
+import com.vaadin.ui.Upload.SucceededEvent;
+import com.vaadin.ui.Upload.SucceededListener;
 import com.vaadin.ui.VerticalLayout;
 
 @Theme("demo")
@@ -33,30 +40,18 @@ public class DemoUI extends UI {
     private CssLayout framesLayout;
     private List<File> imageFiles = new ArrayList<File>();
     private HorizontalLayout webcamAndGif;
+    private ImageReceiver imageReceiver = new ImageReceiver();
 
     @Override
     protected void init(VaadinRequest request) {
 
+        Upload upload = new Upload("Upload", imageReceiver);
+        upload.addSucceededListener(imageReceiver);
+
         // Initialize our new UI component
         final Webcam webcam = new Webcam();
-        webcam.setReceiver(new Upload.Receiver() {
-
-            @Override
-            public OutputStream receiveUpload(String filename, String mimeType) {
-                try {
-                    File targetFile = File.createTempFile(filename, ".jpeg");
-                    targetFile.deleteOnExit();
-                    addImage(targetFile); // TODO should add
-                                          // "completed listener"
-                    return new FileOutputStream(targetFile);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        });
+        webcam.setReceiver(imageReceiver);
+        webcam.addCaptureSucceededListener(imageReceiver);
 
         layout = new VerticalLayout();
         layout.setStyleName("demoContentLayout");
@@ -72,6 +67,7 @@ public class DemoUI extends UI {
                 "images/sample.gif")));
         gifImage.setWidth("100%");
 
+        // layout.addComponent(upload);
         layout.addComponent(webcamAndGif);
         layout.addComponent(framesLayout = new CssLayout());
         layout.setComponentAlignment(webcamAndGif, Alignment.TOP_CENTER);
@@ -86,7 +82,7 @@ public class DemoUI extends UI {
         framesLayout.addComponent(image);
 
         imageFiles.add(imageFile);
-        if (imageFiles.size() >= 3) {
+        if (imageFiles.size() > 1) {
             try {
                 File gifImageFile = GifUtil.writeAnimatedGif(imageFiles
                         .toArray(new File[imageFiles.size()]));
@@ -95,9 +91,43 @@ public class DemoUI extends UI {
                 webcamAndGif.replaceComponent(gifImage, newGif);
                 gifImage = newGif;
             } catch (IOException e) {
-                // TODO Auto-generated catch block
+                Notification
+                        .show("Whoops, something went wrong. Please try again later.",
+                                Type.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         }
     }
+
+    private class ImageReceiver implements Receiver, SucceededListener,
+            CaptureSucceededListener {
+
+        private File targetFile;
+
+        @Override
+        public OutputStream receiveUpload(String filename, String mimeType) {
+            try {
+                targetFile = File.createTempFile(filename, ".jpeg");
+                targetFile.deleteOnExit();
+                return new FileOutputStream(targetFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        public void uploadSucceeded(SucceededEvent event) {
+            // From upload.
+            addImage(targetFile);
+        }
+
+        @Override
+        public void captureSucceeded(CaptureSucceededEvent event) {
+            // From webcam.
+            addImage(targetFile);
+        }
+    };
 }
