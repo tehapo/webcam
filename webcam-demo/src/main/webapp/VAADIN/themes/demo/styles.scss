@@ -34,12 +34,60 @@ $darkgreen: darken($green, 30%);
 		outline: none;
 	}
 
+    .download,
+    .v-disabled.download,
+    .download:focus {
+        cursor: pointer;
+        background-image: none;
+        background: #00c4ff;
+        background: -webkit-linear-gradient(#73dbfd, #00c4ff);
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+    .download:hover {
+        box-shadow: 0px 0px 8px #b2ecff;
+    }
+    .download:active {
+        -webkit-transform: scale(0.97, 0.97);
+    }
+    .download .v-button-wrap,
+    .download:focus .v-button-wrap {
+        background: transparent !important;
+    }
+    .download .v-button-caption {
+        font-family: "Permanent Marker", Verdana, Arial, sans-serif;
+        font-size: 18px;
+        color: #fff;
+        text-shadow: 1px 1px 2px #000;
+    }
+
 	.webcam,
-	.gif-image {
+	.gif-image,
+    .gif-preview {
 		background: #fff;
 		padding: 7px;
 		box-shadow: 0px 10px 20px -7px #000;
 	}
+
+    .gif-preview:after {
+        content: "PREVIEW";
+        font-family: Verdana, Arial, sans-serif;
+        background: #000;
+        color: #fff;
+        position: absolute;
+        top: 13px;
+        right: -18px;
+        padding: 5px 14px;
+        opacity: 0.9;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+    }
+
+    .gif-preview img {
+        width: 100%;
+        display: block;
+    }
 
 	.frames {
 		.v-image {
