@@ -80,7 +80,7 @@ public class DemoUI extends UI {
 
     private void addImage(File imageFile) {
         Image image = new Image(null, new FileResource(imageFile));
-        image.setWidth("10%");
+        image.setWidth("104px");
         framesLayout.addComponent(image);
 
         imageFiles.add(imageFile);
