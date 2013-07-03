@@ -19,7 +19,7 @@ public class GifUtil {
 
         AnimatedGifEncoder encoder = new AnimatedGifEncoder();
         encoder.setRepeat(0);
-        encoder.setFrameRate(5.0f);
+        encoder.setDelay(200);
         encoder.start(output);
 
         for (File imageFile : images) {
