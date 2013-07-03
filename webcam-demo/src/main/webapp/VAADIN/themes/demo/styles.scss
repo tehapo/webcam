@@ -1,5 +1,6 @@
 @import "../reindeer/reindeer.scss";
 
+$blue: #00b4f0;
 $gray: #d1d1cf;
 $green: #40b527;
 $darkgreen: darken($green, 30%);
@@ -17,8 +18,17 @@ $darkgreen: darken($green, 30%);
 		background-image: radial-gradient(circle, #006080, #002633);
 		background-position: center center;
 		background-repeat: no-repeat;
-		min-height: 750px;
+		min-height: 100%;
 	}
+
+    .v-label {
+        font-family: "Permanent Marker", Verdana, Arial, sans-serif;
+        font-size: 50px;
+        line-height: 1.6em;
+        text-align: center;
+        color: #fff;
+        text-shadow: 0 0 13px $blue;
+    }
 
 	.webcam video:focus {
 		outline: none;

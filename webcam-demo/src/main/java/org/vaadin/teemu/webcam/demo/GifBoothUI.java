@@ -21,6 +21,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
@@ -31,9 +32,9 @@ import com.vaadin.ui.Upload.SucceededListener;
 import com.vaadin.ui.VerticalLayout;
 
 @Theme("demo")
-@Title("Webcam Add-on Demo")
+@Title("GifBooth")
 @SuppressWarnings("serial")
-public class DemoUI extends UI {
+public class GifBoothUI extends UI {
 
     private VerticalLayout layout;
     private Image gifImage;
@@ -55,7 +56,6 @@ public class DemoUI extends UI {
 
         layout = new VerticalLayout();
         layout.setStyleName("demoContentLayout");
-        layout.setSizeFull();
         layout.setSpacing(true);
 
         webcamAndGif = new HorizontalLayout();
@@ -69,6 +69,7 @@ public class DemoUI extends UI {
         gifImage.setWidth("100%");
 
         // layout.addComponent(upload);
+        layout.addComponent(new Label("GifBooth"));
         layout.addComponent(webcamAndGif);
         layout.addComponent(framesLayout = new CssLayout());
         layout.setComponentAlignment(webcamAndGif, Alignment.TOP_CENTER);

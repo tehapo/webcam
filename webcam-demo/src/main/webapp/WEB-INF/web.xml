@@ -8,11 +8,11 @@
     </context-param>
     <servlet>
         <servlet-name>VaadinServlet</servlet-name>
-        <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+        <servlet-class>org.vaadin.teemu.webcam.demo.GifBoothServlet</servlet-class>
         <init-param>
             <description>UI to display for the add-on component demo</description>
             <param-name>UI</param-name>
-            <param-value>org.vaadin.teemu.webcam.demo.DemoUI</param-value>
+            <param-value>org.vaadin.teemu.webcam.demo.GifBoothUI</param-value>
         </init-param>
         <init-param>
             <description>Widgetset for the add-on component demo</description>
