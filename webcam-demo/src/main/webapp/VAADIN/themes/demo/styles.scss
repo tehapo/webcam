@@ -44,12 +44,15 @@ $darkgreen: darken($green, 30%);
         -webkit-border-radius: 3px;
         -moz-border-radius: 3px;
         border-radius: 3px;
+        -webkit-transition: all 100ms ease-in-out;
+        -moz-transition: all 100ms ease-in-out;
     }
     .download:hover {
         box-shadow: 0px 0px 8px #b2ecff;
     }
     .download:active {
         -webkit-transform: scale(0.97, 0.97);
+        -moz-transform: scale(0.97, 0.97);
     }
     .download .v-button-wrap,
     .download:focus .v-button-wrap {
