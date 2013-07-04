@@ -6,7 +6,7 @@
 	<artifactId>webcam</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1.0</version>
-	<name>Webcam Add-on</name>
+	<name>Webcam</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
