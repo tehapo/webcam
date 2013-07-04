@@ -18,6 +18,8 @@ import org.vaadin.teemu.webcam.Webcam.CaptureSucceededListener;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+import com.vaadin.event.MouseEvents.ClickEvent;
+import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.StreamResource;
@@ -113,13 +115,25 @@ public class GifBoothUI extends UI {
         setContent(layout);
     }
 
-    private void addImage(File imageFile) {
+    private void addImage(final File imageFile) {
         FileResource imageResource = new FileResource(imageFile);
 
         // Frame list
         Image image = new Image(null, imageResource);
         image.setWidth("104px");
-        framesLayout.addComponent(image);
+        final CssLayout wrapper = new CssLayout();
+        wrapper.addComponent(image);
+        image.addClickListener(new ClickListener() {
+
+            @Override
+            public void click(ClickEvent event) {
+                framesLayout.removeComponent(wrapper);
+                preview.removeImage(imageFiles.indexOf(imageFile));
+                imageFiles.remove(imageFile);
+                downloadButton.setEnabled(!imageFiles.isEmpty());
+            }
+        });
+        framesLayout.addComponent(wrapper);
 
         // Add to preview animation
         preview.addImage(imageResource);

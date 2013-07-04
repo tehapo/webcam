@@ -13,6 +13,13 @@ public class GifPreview extends AbstractComponent {
         getState().frameCount++;
     }
 
+    public void removeImage(int frameIndex) {
+        for (int i = frameIndex; i < getState().frameCount - 1; i++) {
+            setResource("" + i, getResource("" + (i + 1)));
+        }
+        getState().frameCount--;
+    }
+
     @Override
     protected GifPreviewState getState() {
         return (GifPreviewState) super.getState();

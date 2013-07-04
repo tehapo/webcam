@@ -50,9 +50,16 @@ $darkgreen: darken($green, 30%);
     .download:hover {
         box-shadow: 0px 0px 8px #b2ecff;
     }
+    .v-disabled.download:hover {
+        box-shadow: none;
+    }
     .download:active {
         -webkit-transform: scale(0.97, 0.97);
         -moz-transform: scale(0.97, 0.97);
+    }
+    .v-disabled.download:active {
+        -webkit-transform: none;
+        -moz-transform: none;
     }
     .download .v-button-wrap,
     .download:focus .v-button-wrap {
@@ -93,8 +100,19 @@ $darkgreen: darken($green, 30%);
     }
 
 	.frames {
+        .v-csslayout {
+            display: inline-block;
+            margin: 10px 2px;
+            background: url(images/icon-del.png) transparent center -100px no-repeat;
+            background-size: 40px 40px;
+            -webkit-transition: background-position 200ms cubic-bezier(.67, .01, .33, 1);
+            -moz-transition: background-position 200ms cubic-bezier(.67, .01, .33, 1);
+        }
+        .v-csslayout:hover {
+            background-position: center center;
+        }
 		.v-image {
-			margin: 10px 2px;
+            cursor: pointer;
 			padding: 2px;
 			background: #fff;
 			-webkit-animation-name: appear;
@@ -103,22 +121,18 @@ $darkgreen: darken($green, 30%);
             -moz-animation-name: appear;
             -moz-animation-duration: 400ms;
             -moz-animation-timing-function: ease-out;
-		}
-	}
 
-	// You can also customize your component for the demo
-	// app, but remember that these styles are not part of
-	// the component. To include built-in CSS for your component,
-	// edit client/styles.css under java sources
-	div.webcam {
-		/*-color: $green;
-		font-size: 50pt;
-		font-weight: bold;
-		text-shadow: 0px 3px 0px $darkgreen,
-             0px 14px 10px rgba(0,0,0,0.15),
-             0px 24px 2px rgba(0,0,0,0.1),
-             0px 34px 30px rgba(0,0,0,0.1);
-        text-align: center;*/
+            -webkit-transition: all 300ms ease-in-out;
+            -moz-transition: all 300ms ease-in-out;
+		}
+        .v-image:hover {
+            opacity: 0.2;
+        }
+        .v-image:active,
+        .v-image:focus {
+            -webkit-transform: scale(0.4, 0.4);
+            -moz-transform: scale(0.4, 0.4);
+        }
 	}
 }
 
