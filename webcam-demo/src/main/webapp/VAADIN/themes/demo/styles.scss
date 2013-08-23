@@ -5,24 +5,36 @@ $gray: #d1d1cf;
 $green: #40b527;
 $darkgreen: darken($green, 30%);
 
+@mixin rounded-border($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin marker-font {
+    font-family: "Permanent Marker", Verdana, Arial, sans-serif;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+}
+
 // Prefix all selectors in your theme with .demo
 .demo {
 
-	// Include reindeer theme styles in your theme
-	@include reindeer;
+    // Include reindeer theme styles in your theme
+    @include reindeer;
 
-	// You can style your demo app right here
-	.demoContentLayout {
-		background-color: $gray;
-		background-image: -webkit-radial-gradient(circle, #006080, #002633);
-		background-image: radial-gradient(circle, #006080, #002633);
-		background-position: center center;
-		background-repeat: no-repeat;
-		min-height: 100%;
-	}
+    // You can style your demo app right here
+    .demoContentLayout {
+        background-color: $gray;
+        background-image: -webkit-radial-gradient(circle, #006080, #002633);
+        background-image: -moz-radial-gradient(circle, #006080, #002633);
+        background-position: center center;
+        background-repeat: no-repeat;
+        min-height: 100%;
+    }
 
     .v-label {
-        font-family: "Permanent Marker", Verdana, Arial, sans-serif;
+        @include marker-font;
         font-size: 50px;
         line-height: 1.6em;
         text-align: center;
@@ -30,9 +42,9 @@ $darkgreen: darken($green, 30%);
         text-shadow: 0 0 13px $blue;
     }
 
-	.webcam video:focus {
-		outline: none;
-	}
+    .webcam video:focus {
+        outline: none;
+    }
 
     .download,
     .v-disabled.download,
@@ -41,9 +53,8 @@ $darkgreen: darken($green, 30%);
         background-image: none;
         background: #00c4ff;
         background: -webkit-linear-gradient(#73dbfd, #00c4ff);
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
+        background: -moz-linear-gradient(#73dbfd, #00c4ff);
+        @include rounded-border(3px);
         -webkit-transition: all 100ms ease-in-out;
         -moz-transition: all 100ms ease-in-out;
     }
@@ -66,19 +77,17 @@ $darkgreen: darken($green, 30%);
         background: transparent !important;
     }
     .download .v-button-caption {
-        font-family: "Permanent Marker", Verdana, Arial, sans-serif;
+        @include marker-font;
         font-size: 18px;
-        color: #fff;
-        text-shadow: 1px 1px 2px #000;
     }
 
-	.webcam,
-	.gif-image,
+    .webcam,
+    .gif-image,
     .gif-preview {
-		background: #fff;
-		padding: 7px;
-		box-shadow: 0px 10px 20px -7px #000;
-	}
+        background: #fff;
+        padding: 7px;
+        box-shadow: 0px 10px 20px -7px #000;
+    }
 
     .gif-preview:after {
         content: "PREVIEW";
@@ -99,7 +108,57 @@ $darkgreen: darken($green, 30%);
         display: block;
     }
 
-	.frames {
+    .v-caption-framerate .v-captiontext {
+        @include marker-font;
+        font-weight: normal;
+        font-size: 16px;
+    }
+    .v-slot-framerate {
+        margin-bottom: 20px;
+    }
+    .framerate .v-button {
+        background: #000;
+        background-image: none;
+        border-right: 1px solid #0084bf;
+        cursor: pointer;
+        background: #00c4ff;
+        background: -webkit-linear-gradient(#73dbfd, #00c4ff);
+    }
+    .framerate .v-button .v-icon {
+        width: 32px;
+        height: 10px;
+    }
+    .framerate .v-button-wrap,
+    .framerate .v-button:active .v-button-wrap,
+    .framerate .v-button:focus .v-button-wrap {
+        padding: 4px 10px 0 4px;
+        background: transparent;
+    }
+    .framerate .v-button-caption {
+        color: #fff;
+        text-shadow: none;
+    }
+    .framerate .v-button.selected {
+        background: #00a4df;
+        background: -webkit-linear-gradient(#53bbdd, #00a4df);
+        background: -moz-linear-gradient(#53bbdd, #00a4df);
+        box-shadow: inset 0px 0px 8px rgba(0,0,0,0.5);
+        -moz-transform: scale(0.97);
+        -webkit-transform: scale(0.97);
+        transform: scale(0.97);
+    }
+    .framerate .v-button.selected .v-icon {
+        -webkit-filter: brightness(90%);
+    }
+    .framerate .v-slot:first-child .v-button {
+        @include rounded-border(4px 0 0 4px);
+    }
+    .framerate .v-slot:last-child .v-button {
+        @include rounded-border(0 4px 4px 0);
+        border-right: none;
+    }
+
+    .frames {
         .v-csslayout {
             display: inline-block;
             margin: 10px 2px;
@@ -111,20 +170,20 @@ $darkgreen: darken($green, 30%);
         .v-csslayout:hover {
             background-position: center center;
         }
-		.v-image {
+        .v-image {
             cursor: pointer;
-			padding: 2px;
-			background: #fff;
-			-webkit-animation-name: appear;
-    		-webkit-animation-duration: 400ms;
-    		-webkit-animation-timing-function: ease-out;
+            padding: 2px;
+            background: #fff;
+            -webkit-animation-name: appear;
+            -webkit-animation-duration: 400ms;
+            -webkit-animation-timing-function: ease-out;
             -moz-animation-name: appear;
             -moz-animation-duration: 400ms;
             -moz-animation-timing-function: ease-out;
 
             -webkit-transition: all 300ms ease-in-out;
             -moz-transition: all 300ms ease-in-out;
-		}
+        }
         .v-image:hover {
             opacity: 0.2;
         }
@@ -133,7 +192,7 @@ $darkgreen: darken($green, 30%);
             -webkit-transform: scale(0.4, 0.4);
             -moz-transform: scale(0.4, 0.4);
         }
-	}
+    }
 }
 
 @-webkit-keyframes appear {

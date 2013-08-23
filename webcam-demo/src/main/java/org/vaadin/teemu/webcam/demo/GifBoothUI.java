@@ -28,6 +28,7 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -54,6 +55,7 @@ public class GifBoothUI extends UI {
     private ImageReceiver imageReceiver = new ImageReceiver();
     private GifPreview preview = new GifPreview();
     private Button downloadButton;
+    private int frameDelayMs = 200;
     private final FileDownloader downloader = new FileDownloader(
             new StreamResource(new StreamSource() {
 
@@ -106,6 +108,9 @@ public class GifBoothUI extends UI {
         downloadButton.addStyleName("download");
         downloadButton.setEnabled(false);
         downloader.extend(downloadButton);
+        Component frameRateSelector = createFrameRateSelector();
+        layout.addComponent(frameRateSelector);
+        layout.setComponentAlignment(frameRateSelector, Alignment.TOP_CENTER);
         layout.addComponent(downloadButton);
         layout.setComponentAlignment(downloadButton, Alignment.TOP_CENTER);
         layout.addComponent(framesLayout = new CssLayout());
@@ -113,6 +118,36 @@ public class GifBoothUI extends UI {
         framesLayout.addStyleName("frames");
         framesLayout.setWidth("864px");
         setContent(layout);
+    }
+
+    private Component createFrameRateSelector() {
+        final HorizontalLayout buttons = new HorizontalLayout();
+        buttons.setCaption("Framerate");
+        buttons.addStyleName("framerate");
+        Button.ClickListener listener = new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                for (Component button : buttons) {
+                    button.removeStyleName("selected");
+                }
+                frameDelayMs = (Integer) event.getButton().getData();
+                preview.setFrameDelay(frameDelayMs);
+                event.getButton().addStyleName("selected");
+            }
+        };
+        int[] options = { 300, 200, 100 };
+        for (int option : options) {
+            Button b = new Button("", listener);
+            b.setIcon(new ThemeResource(String.format("images/frames-%d.png",
+                    option)));
+            b.setData(option);
+            buttons.addComponent(b);
+            if (option == frameDelayMs) {
+                b.addStyleName("selected");
+            }
+        }
+        return buttons;
     }
 
     private void addImage(final File imageFile) {
@@ -149,8 +184,8 @@ public class GifBoothUI extends UI {
     private File createGif() {
         if (imageFiles.size() > 1) {
             try {
-                File gifImageFile = GifUtil.writeAnimatedGif(imageFiles
-                        .toArray(new File[imageFiles.size()]));
+                File gifImageFile = GifUtil.writeAnimatedGif(frameDelayMs,
+                        imageFiles.toArray(new File[imageFiles.size()]));
                 return gifImageFile;
             } catch (IOException e) {
                 handleException(e);

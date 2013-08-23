@@ -12,14 +12,15 @@ import com.madgag.gif.fmsware.AnimatedGifEncoder;
 
 public class GifUtil {
 
-    public static File writeAnimatedGif(File... images) throws IOException {
+    public static File writeAnimatedGif(int frameDelayMs, File... images)
+            throws IOException {
         File targetFile = File.createTempFile(UUID.randomUUID().toString(),
                 ".gif");
         FileOutputStream output = new FileOutputStream(targetFile);
 
         AnimatedGifEncoder encoder = new AnimatedGifEncoder();
         encoder.setRepeat(0);
-        encoder.setDelay(200);
+        encoder.setDelay(frameDelayMs);
         encoder.start(output);
 
         for (File imageFile : images) {

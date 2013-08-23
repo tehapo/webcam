@@ -8,6 +8,10 @@ import com.vaadin.ui.AbstractComponent;
 @SuppressWarnings("serial")
 public class GifPreview extends AbstractComponent {
 
+    public void setFrameDelay(int frameDelayMs) {
+        getState().frameDelay = frameDelayMs;
+    }
+
     public void addImage(Resource image) {
         setResource("" + getState().frameCount, image);
         getState().frameCount++;
