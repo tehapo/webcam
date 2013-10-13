@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class WebcamWidget extends Widget {
 
     private final Video video;
+    private Object stream;
 
     public WebcamWidget() {
         setElement(DOM.createDiv());
@@ -49,6 +50,12 @@ public class WebcamWidget extends Widget {
         }
     }
 
+    @Override
+    protected void onUnload() {
+        super.onUnload();
+        stopWebCam();
+    }
+
     // @formatter:off
     private native String requestWebCam() /*-{
         var callbackInstance = this;
@@ -56,6 +63,7 @@ public class WebcamWidget extends Widget {
         $wnd.navigator.getMedia({ video: true, audio: false },
             function(stream) {
                 var videoElement = callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::getVideoElement()();
+                callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::stream = stream;
                 if ($wnd.navigator.mozGetUserMedia) {
                     // Firefox
                     videoElement.mozSrcObject = stream;
@@ -86,5 +94,11 @@ public class WebcamWidget extends Widget {
         context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
         return canvas.toDataURL("image/jpeg");
     }-*/;
+    
+    private native String stopWebCam() /*-{
+        var stream = this.@org.vaadin.teemu.webcam.client.WebcamWidget::stream;
+        stream.stop();
+    }-*/;
+    
     // @formatter:on
 }
