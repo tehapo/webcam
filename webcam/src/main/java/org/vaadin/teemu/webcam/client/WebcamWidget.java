@@ -53,7 +53,7 @@ public class WebcamWidget extends Widget {
     @Override
     protected void onUnload() {
         super.onUnload();
-        stopWebCam();
+        stopWebcam();
     }
 
     // @formatter:off
@@ -95,7 +95,7 @@ public class WebcamWidget extends Widget {
         return canvas.toDataURL("image/jpeg");
     }-*/;
     
-    private native String stopWebCam() /*-{
+    private native String stopWebcam() /*-{
         var stream = this.@org.vaadin.teemu.webcam.client.WebcamWidget::stream;
         stream.stop();
     }-*/;
