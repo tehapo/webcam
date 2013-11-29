@@ -97,7 +97,9 @@ public class WebcamWidget extends Widget {
     
     private native String stopWebcam() /*-{
         var stream = this.@org.vaadin.teemu.webcam.client.WebcamWidget::stream;
-        stream.stop();
+        if (stream != null) {
+            stream.stop();
+        }
     }-*/;
     
     // @formatter:on
