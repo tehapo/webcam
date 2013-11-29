@@ -4,13 +4,13 @@ Webcam is an HTML5 webcam component for Vaadin 7.
 
 ## Online demo
 
-Try the add-on demo at _not yet available_
+Try the add-on demo at http://teemu.app.fi/gifbooth
 
 The demo application uses and includes animated GIF processing Java classes made available by Kevin Weiner. See webcam-demo/src/main/java/com/madgag/gif/fmsware/README.markdown for more details.
 
 ## Download release
 
-Official releases of this add-on will later be available at Vaadin Directory. For Maven instructions, download and reviews, go to _not yet available_
+Official releases of this add-on will later be available at Vaadin Directory. For Maven instructions, download and reviews, go to https://vaadin.com/addon/webcam
 
 ## Building and running demo
 
