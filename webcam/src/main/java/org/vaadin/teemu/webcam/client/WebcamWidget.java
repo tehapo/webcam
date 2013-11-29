@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class WebcamWidget extends Widget {
 
     private final Video video;
-    private Object stream;
+    private WebcamStream stream;
 
     public WebcamWidget() {
         setElement(DOM.createDiv());
@@ -53,7 +53,9 @@ public class WebcamWidget extends Widget {
     @Override
     protected void onUnload() {
         super.onUnload();
-        stopWebcam();
+        if (stream != null) {
+            stream.stop();
+        }
     }
 
     // @formatter:off
@@ -93,13 +95,6 @@ public class WebcamWidget extends Widget {
         var context = canvas.getContext("2d");
         context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
         return canvas.toDataURL("image/jpeg");
-    }-*/;
-    
-    private native String stopWebcam() /*-{
-        var stream = this.@org.vaadin.teemu.webcam.client.WebcamWidget::stream;
-        if (stream != null) {
-            stream.stop();
-        }
     }-*/;
     
     // @formatter:on
