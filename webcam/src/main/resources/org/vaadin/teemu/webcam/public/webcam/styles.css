@@ -21,6 +21,8 @@ div.webcam:after {
 	bottom: 25px;
 	opacity: 0.8;
 	-webkit-transition: opacity 200ms linear, background-size 30ms ease-in-out;
+	-moz-transition: opacity 200ms linear, background-size 30ms ease-in-out;
+	transition: opacity 200ms linear, background-size 30ms ease-in-out;
 }
 div.webcam:hover:after {
 	opacity: 1;	
