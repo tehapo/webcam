@@ -76,6 +76,8 @@ public class WebcamWidget extends Widget {
                         videoElement.src = $wnd.URL.createObjectURL(stream);
                     } else if ($wnd.webkitURL) {
                         videoElement.src = $wnd.webkitURL.createObjectURL(stream);
+                    } else {
+                        videoElement.src = stream;
                     }
                 }
                 callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::webcamAvailable()();
