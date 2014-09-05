@@ -11,6 +11,21 @@ $darkgreen: darken($green, 30%);
     border-radius: $radius;
 }
 
+@mixin transition($transition) {
+    -webkit-transition: $transition;
+    -moz-transition: $transition;
+    -o-transition: $transition;
+    transition: $transition;
+}
+
+@mixin transform($transform) {
+    -webkit-transform: $transform;
+    -moz-transform: $transform;
+    -ms-transform: $transform;
+    -o-transform: $transform;
+    transform: $transform;
+}
+
 @mixin marker-font {
     font-family: "Permanent Marker", Verdana, Arial, sans-serif;
     color: #fff;
@@ -26,11 +41,11 @@ $darkgreen: darken($green, 30%);
     // You can style your demo app right here
     .demoContentLayout {
         background-color: $gray;
-        background-image: -webkit-radial-gradient(circle, #006080, #002633);
-        background-image: -moz-radial-gradient(circle, #006080, #002633);
-        background-image: -ms-radial-gradient(circle, #006080, #002633);
-        background-image: -o-radial-gradient(circle, #006080, #002633);
-        background-image: radial-gradient(circle, #006080, #002633);
+        background: -webkit-radial-gradient(circle, #006080, #002633);
+        background: -moz-radial-gradient(circle, #006080, #002633);
+        background: -ms-radial-gradient(circle, #006080, #002633);
+        background: -o-radial-gradient(circle, #006080, #002633);
+        background: radial-gradient(circle, #006080, #002633);
         background-position: center center;
         background-repeat: no-repeat;
         min-height: 100%;
@@ -57,9 +72,11 @@ $darkgreen: darken($green, 30%);
         background: #00c4ff;
         background: -webkit-linear-gradient(#73dbfd, #00c4ff);
         background: -moz-linear-gradient(#73dbfd, #00c4ff);
+        background: -ms-linear-gradient(#73dbfd, #00c4ff);
+        background: -o-linear-gradient(#73dbfd, #00c4ff);
+        background: linear-gradient(#73dbfd, #00c4ff);
         @include rounded-border(3px);
-        -webkit-transition: all 100ms ease-in-out;
-        -moz-transition: all 100ms ease-in-out;
+        @include transition(all 100ms ease-in-out);
     }
     .download:hover {
         box-shadow: 0px 0px 8px #b2ecff;
@@ -68,12 +85,10 @@ $darkgreen: darken($green, 30%);
         box-shadow: none;
     }
     .download:active {
-        -webkit-transform: scale(0.97, 0.97);
-        -moz-transform: scale(0.97, 0.97);
+        @include transform(scale(0.97, 0.97));
     }
     .v-disabled.download:active {
-        -webkit-transform: none;
-        -moz-transform: none;
+        @include transform(none);
     }
     .download .v-button-wrap,
     .download:focus .v-button-wrap {
@@ -102,8 +117,7 @@ $darkgreen: darken($green, 30%);
         right: -18px;
         padding: 5px 14px;
         opacity: 0.9;
-        -webkit-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
+        @include transform(rotate(45deg));
     }
 
     .gif-preview img {
@@ -126,6 +140,10 @@ $darkgreen: darken($green, 30%);
         cursor: pointer;
         background: #00c4ff;
         background: -webkit-linear-gradient(#73dbfd, #00c4ff);
+        background: -moz-linear-gradient(#73dbfd, #00c4ff);
+        background: -ms-linear-gradient(#73dbfd, #00c4ff);
+        background: -o-linear-gradient(#73dbfd, #00c4ff);
+        background: linear-gradient(#73dbfd, #00c4ff);
     }
     .framerate .v-button .v-icon {
         width: 32px;
@@ -145,10 +163,11 @@ $darkgreen: darken($green, 30%);
         background: #00a4df;
         background: -webkit-linear-gradient(#53bbdd, #00a4df);
         background: -moz-linear-gradient(#53bbdd, #00a4df);
+        background: -ms-linear-gradient(#53bbdd, #00a4df);
+        background: -o-linear-gradient(#53bbdd, #00a4df);
+        background: linear-gradient(#53bbdd, #00a4df);
         box-shadow: inset 0px 0px 8px rgba(0,0,0,0.5);
-        -moz-transform: scale(0.97);
-        -webkit-transform: scale(0.97);
-        transform: scale(0.97);
+        @include transform(scale(0.97));
     }
     .framerate .v-button.selected .v-icon {
         -webkit-filter: brightness(90%);
@@ -167,8 +186,7 @@ $darkgreen: darken($green, 30%);
             margin: 10px 2px;
             background: url(images/icon-del.png) transparent center -100px no-repeat;
             background-size: 40px 40px;
-            -webkit-transition: background-position 200ms cubic-bezier(.67, .01, .33, 1);
-            -moz-transition: background-position 200ms cubic-bezier(.67, .01, .33, 1);
+            @include transition(background-position 200ms cubic-bezier(.67, .01, .33, 1));
         }
         .v-csslayout:hover {
             background-position: center center;
@@ -183,17 +201,18 @@ $darkgreen: darken($green, 30%);
             -moz-animation-name: appear;
             -moz-animation-duration: 400ms;
             -moz-animation-timing-function: ease-out;
+            animation-name: appear;
+            animation-duration: 400ms;
+            animation-timing-function: ease-out;
 
-            -webkit-transition: all 300ms ease-in-out;
-            -moz-transition: all 300ms ease-in-out;
+            @include transition(all 300ms ease-in-out);
         }
         .v-image:hover {
             opacity: 0.2;
         }
         .v-image:active,
         .v-image:focus {
-            -webkit-transform: scale(0.4, 0.4);
-            -moz-transform: scale(0.4, 0.4);
+            @include transform(scale(0.4, 0.4));
         }
     }
 }
@@ -222,5 +241,31 @@ $darkgreen: darken($green, 30%);
     100% {
         opacity: 1;
         -moz-transform: translate(0, 0);
+    }
+}
+@-o-keyframes appear {
+    0% {
+        opacity: 0;
+        -o-transform: translate(0, -100px);
+    }
+    50% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
+        -o-transform: translate(0, 0);
+    }
+}
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: translate(0, -100px);
+    }
+    50% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
     }
 }
