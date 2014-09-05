@@ -22,6 +22,7 @@ public class WebcamWidget extends Widget {
             getElement().appendChild(video.getElement());
             video.setWidth("100%");
             video.setHeight("100%");
+            video.setAutoplay(true);
             requestWebCam();
         } else {
             com.google.gwt.dom.client.Element errorDiv = DOM.createDiv();
@@ -77,7 +78,6 @@ public class WebcamWidget extends Widget {
                         videoElement.src = $wnd.webkitURL.createObjectURL(stream);
                     }
                 }
-                videoElement.play();
                 callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::webcamAvailable()();
             },
             function(error) {
