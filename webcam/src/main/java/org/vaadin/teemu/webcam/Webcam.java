@@ -22,8 +22,8 @@ import com.vaadin.ui.Upload.Receiver;
  * Displays a live webcam viewfinder and takes a photo when either user clicks
  * on the viewfinder or the {@link #capture()} method is called.
  * 
- * <br />
- * <br />
+ * <br>
+ * <br>
  * To receive the captured image, the {@link Upload.Receiver} interface is used
  * similarily to the {@link Upload} component of core Vaadin framework.
  */
@@ -129,6 +129,7 @@ public class Webcam extends AbstractComponent {
          * Called when an image was successfully captured from the webcam.
          * 
          * @param event
+         *            capture event.
          */
         public void captureSucceeded(CaptureSucceededEvent event);
     }
