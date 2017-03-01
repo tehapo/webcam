@@ -5,7 +5,6 @@ import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class WebcamWidget extends Widget {
@@ -36,11 +35,6 @@ public class WebcamWidget extends Widget {
         DOM.sinkEvents(video.getElement(), Event.ONCLICK);
     }
 
-    private void webcamNotAvailable() {
-        // TODO - better error handling
-        Window.alert("Webcam not available.");
-    }
-
     private Element getVideoElement() {
         return video.getElement();
     }
@@ -58,36 +52,51 @@ public class WebcamWidget extends Widget {
             stream.stop();
         }
     }
-
+    
     // @formatter:off
     private native String requestWebCam() /*-{
-        var callbackInstance = this;
-        $wnd.navigator.getMedia = ($wnd.navigator.getUserMedia || $wnd.navigator.webkitGetUserMedia || $wnd.navigator.mozGetUserMedia || $wnd.navigator.msGetUserMedia);
-        $wnd.navigator.getMedia({ video: true, audio: false },
-            function(stream) {
-                var videoElement = callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::getVideoElement()();
-                callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::stream = stream;
-                if ($wnd.navigator.mozGetUserMedia) {
-                    // Firefox
-                    videoElement.mozSrcObject = stream;
-                } else {
-                    // Other browsers
-                    if ($wnd.URL) {
-                        videoElement.src = $wnd.URL.createObjectURL(stream);
-                    } else if ($wnd.webkitURL) {
-                        videoElement.src = $wnd.webkitURL.createObjectURL(stream);
-                    } else {
-                        videoElement.src = stream;
-                    }
-                }
-                callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::webcamAvailable()();
-            },
-            function(error) {
-                callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::webcamNotAvailable()();
+    
+    var callbackInstance = this;
+    var gotDevices = function(deviceInfos) {
+        for (var i = 0; i !== deviceInfos.length; ++i) {
+           var deviceInfo = deviceInfos[i];
+           if (deviceInfo.kind == 'videoinput' && (!deviceInfo.label ||  deviceInfo.label.indexOf('fron') < 0)) {
+              if ($wnd.navigator.mediaDevices && $wnd.navigator.mediaDevices.getUserMedia) {
+                   $wnd.navigator.mediaDevices.getUserMedia({video: {deviceId : deviceInfo.deviceId}})
+                       .then(play);  //.catch(errorCallback);
+              } else  if ($wnd.navigator.getUserMedia) {
+                $wnd.navigator.getUserMedia({video: {deviceId : deviceInfo.deviceId}}, playLegacy, errorCallback);
+              } else if($wnd.navigator.webkitGetUserMedia) { // WebKit-prefixed
+                 $wnd.navigator.webkitGetUserMedia( {video: {deviceId : deviceInfo.deviceId}}, play, errorCallback);
+              } else if($wnd.navigator.mozGetUserMedia) { // Mozilla-prefixed 
+                $wnd.navigator.getUserMedia({video: {deviceId : deviceInfo.deviceId}}, play, errorCallback);
+              }
+              return;
             }
-        );
+           }}
+           
+    var play = function(stream) {
+        var v = callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::getVideoElement()();        
+        callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::stream = stream;
+        v.src = $wnd.URL.createObjectURL(stream);
+        callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::webcamAvailable()();
+    }
+    
+    var playLegacy = function(stream) {
+        var v = callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::getVideoElement()();
+        callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::stream = stream;
+        v.src = stream;
+        callbackInstance.@org.vaadin.teemu.webcam.client.WebcamWidget::webcamAvailable()();
+    }
+    
+    var errorCallback = function(error) {
+        $wnd.alert("Webcam not available. " + error);
+    }
+           
+        navigator.mediaDevices.enumerateDevices().then(gotDevices); //.catch(errorCallback);
     }-*/;
-
+    
+    
     public native String captureAsDataURL() /*-{
         var canvas = $doc.createElement("canvas");
         var videoElement = this.@org.vaadin.teemu.webcam.client.WebcamWidget::getVideoElement()();
