@@ -5,12 +5,12 @@
 	<groupId>org.vaadin.teemu</groupId>
 	<artifactId>webcam-root</artifactId>
 	<packaging>pom</packaging>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 	<name>Webcam Add-on Root Project</name>
 
 	<modules>
 		<module>webcam</module>
-		<module>webcam-demo</module>
+		<!--module>webcam-demo</module-->
 	</modules>
 
 </project>
