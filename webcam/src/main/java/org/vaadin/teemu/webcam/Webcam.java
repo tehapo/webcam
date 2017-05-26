@@ -75,6 +75,10 @@ public class Webcam extends AbstractComponent {
         getRpcProxy(WebcamClientRpc.class).capture();
     }
 
+    public void stopStream() {
+        getRpcProxy(WebcamClientRpc.class).stopStream();
+    }
+
     protected OutputStream getOutputStream(String filename, String mimeType) {
         if (receiver != null) {
             return receiver.receiveUpload(filename, mimeType);
