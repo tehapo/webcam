@@ -1,4 +1,4 @@
-@import "../reindeer/reindeer.scss";
+@import "../valo/valo.scss";
 
 $blue: #00b4f0;
 $gray: #d1d1cf;
@@ -35,8 +35,8 @@ $darkgreen: darken($green, 30%);
 // Prefix all selectors in your theme with .demo
 .demo {
 
-    // Include reindeer theme styles in your theme
-    @include reindeer;
+    // Include valo theme styles in your theme
+    @include valo;
 
     // You can style your demo app right here
     .demoContentLayout {
