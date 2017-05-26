@@ -37,6 +37,11 @@ public class WebcamConnector extends AbstractComponentConnector {
                 // Commanded by the server-side component.
                 captureNow();
             }
+
+            @Override
+            public void stopStream() {
+                getWidget().stopSteam();
+            }
         });
     }
 

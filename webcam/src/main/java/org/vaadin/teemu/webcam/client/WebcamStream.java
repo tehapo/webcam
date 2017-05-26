@@ -11,7 +11,12 @@ public class WebcamStream extends JavaScriptObject {
     // @formatter:off
     
     public final native void stop() /*-{
-        this.stop();
+        for (var i = 0; i < this.getTracks().length; i++) {
+            var track = this.getTracks()[i];
+            if(track !== null) {
+                track.stop();
+            }
+        }
     }-*/;
     
     // @formatter:on

@@ -45,6 +45,13 @@ public class WebcamWidget extends Widget {
         return video.getElement();
     }
 
+
+    protected void stopSteam() {
+        if (stream != null) {
+            stream.stop();
+        }
+    }
+
     public void setClickListener(EventListener listener) {
         if (video != null) {
             DOM.setEventListener(video.getElement(), listener);
@@ -54,9 +61,7 @@ public class WebcamWidget extends Widget {
     @Override
     protected void onUnload() {
         super.onUnload();
-        if (stream != null) {
-            stream.stop();
-        }
+        stopSteam();
     }
 
     // @formatter:off

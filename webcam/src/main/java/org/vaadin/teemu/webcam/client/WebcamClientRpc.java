@@ -9,4 +9,9 @@ public interface WebcamClientRpc extends ClientRpc {
      */
     public void capture();
 
+    /**
+     * Passes the command to stop all tracks on the camera stream
+     */
+    public void stopStream();
+
 }
