@@ -1,3 +1,6 @@
+[![Published on Vaadin  Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/webcam)
+[![Stars on Vaadin Directory](https://img.shields.io/vaadin-directory/star/webcam.svg)](https://vaadin.com/directory/component/webcam)
+
 # Webcam Add-on for Vaadin 7
 
 Webcam is an HTML5 webcam component for Vaadin 7.
